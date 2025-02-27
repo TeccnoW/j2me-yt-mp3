@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+app = FastAPI(
+    root_path="/APP",
+    version="0.0.1",
+    redoc_url="/redocs",  # None
+    docs_url="/docs"  # None
+)
 
 @app.get("/online")
 async def read_root():
