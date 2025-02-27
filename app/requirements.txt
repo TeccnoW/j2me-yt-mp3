@@ -1,2 +1,6 @@
 fastapi
 uvicorn
+
+pytube
+pytubefix
+moviepy

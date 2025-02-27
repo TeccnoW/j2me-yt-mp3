@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body.dark {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 960px;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+        form label,
+        form input,
+        form button {
+            display: block;
+            margin-bottom: 1rem;
+        }
+        form input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #444;
+            background-color: #222;
+            color: #e0e0e0;
+        }
+        form button {
+            padding: 0.7rem;
+            border: none;
+            background-color: #333;
+            color: #e0e0e0;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #444;
+        }
+    </style>
+    <title>YouTube to MP3 Converter</title>
+</head>
+<body class="dark">
+    <div class="container">
+        <h1>YouTube to MP3 Converter</h1>
+        <form id="yt-mp3-form" action="/download" method="post">
+            <label for="video_url">Enter YouTube Video URL:</label>
+            <input type="text" id="video_url" name="url" required>
+            <button type="submit">Convert</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('yt-mp3-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const videoUrl = document.getElementById('video_url').value;
+            const formData = new FormData();
+            formData.append('url', videoUrl);
+    
+            try {
+                const response = await fetch('/download', {
+                    method: 'POST',
+                    body: formData
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Conversion failed.');
+                }
+    
+                // Extract the filename from the Content-Disposition header or fallback to default
+                const contentDisposition = response.headers.get('content-disposition');
+                let fileName = 'output.mp3';
+                if (contentDisposition) {
+                    const fileNameMatch = contentDisposition.match(/filename\*?=(?:UTF-8'')?([^;]+)/);
+                    if (fileNameMatch && fileNameMatch[1]) {
+                        fileName = decodeURIComponent(fileNameMatch[1]);
+                    }
+                }
+    
+                const blob = await response.blob();
+                const downloadUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = downloadUrl;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(downloadUrl);
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+    </script>
+</body>
+</html>
