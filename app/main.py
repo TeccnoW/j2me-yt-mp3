@@ -6,7 +6,6 @@ import jinja2
 import urllib.parse
 
 app = FastAPI(
-    root_path="/APP",
     version="0.0.1",
     redoc_url="/redocs",  # None
     docs_url="/docs"  # None

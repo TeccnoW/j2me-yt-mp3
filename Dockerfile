@@ -25,23 +25,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the application code into /app/app
 COPY app/ ./app/
 
-# --------------------
-# NGINX Configuration
-# --------------------
+EXPOSE 8001
 
-# Copy NGINX configuration
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# --------------------
-# Startup Script
-# --------------------
-
-# Copy the startup script to /app and fix its line endings and permissions
-COPY start.sh ./start.sh
-RUN sed -i 's/\r$//' ./start.sh && chmod +x ./start.sh
-
-# Expose NGINX port
-EXPOSE 8080
-
-# Start the application using the startup script
-CMD ["/app/start.sh"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001"]

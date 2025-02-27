@@ -9,8 +9,10 @@ def convert_to_mp3(video_url):
         audio_stream = yt.streams.filter(only_audio=True).first()
         audio_stream = audio_stream.download()
         
-        # Prepare the MP3 file path by replacing the extension
-        mp3_path = os.path.splitext(audio_stream)[0] + '.mp3'
+        # Set the output directory to /tmp and construct a new file path
+        mp3_output_dir = "/tmp"
+        base_name = os.path.splitext(os.path.basename(audio_stream))[0]
+        mp3_path = os.path.join(mp3_output_dir, base_name + '.mp3')
         
         # Extract the audio using AudioFileClip
         with AudioFileClip(audio_stream) as clip:
