@@ -8,8 +8,12 @@ app = FastAPI(
 )
 
 @app.get("/online")
-async def read_root():
+async def online():
     return {"status": "online"}
+
+@app.get("/")
+async def read_root():
+    return {"root": "root"}
 
 if __name__ == "__main__":
     import uvicorn
