@@ -58,7 +58,6 @@ def convert_to_mp3(video_url):
         return mp3_path, base_name
     
     except Exception as e:
-        print(f"Error: {e}")
         raise e
 
 if __name__ == '__main__':

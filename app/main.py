@@ -48,6 +48,7 @@ async def download_file(url: str = Form(...)):
             return FileResponse(mp3_path, media_type='audio/mpeg', headers=headers)
         return {"error": "Error occurred"}
     except Exception as e:
+        print("HTTPException", e)
         return HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
