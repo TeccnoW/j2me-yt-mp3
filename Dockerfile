@@ -28,6 +28,8 @@ RUN curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | gpg --yes --dearmor
     && apt-get update \
     && apt-get install -y cloudflare-warp
 
+RUN warp-cli registration new
+
 # Clone the repository and run Node.js build commands
 RUN git clone https://github.com/YunzheZJU/youtube-po-token-generator.git
 WORKDIR /youtube-po-token-generator
@@ -60,7 +62,7 @@ COPY start.sh ./start.sh
 RUN sed -i 's/\r$//' ./start.sh && chmod +x ./start.sh
 
 # Expose necessary ports
-EXPOSE 8080
+EXPOSE 8001
 
 # Start both applications using the startup script
 CMD ["/app/start.sh"]
