@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 load_dotenv(".env")
 
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Form, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -48,7 +48,7 @@ async def download_file(url: str = Form(...)):
             return FileResponse(mp3_path, media_type='audio/mpeg', headers=headers)
         return {"error": "Error occurred"}
     except Exception as e:
-        return {"error": f"Error: {e}"}
+        return HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn
