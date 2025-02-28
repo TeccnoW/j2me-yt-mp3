@@ -10,7 +10,7 @@ def convert_to_mp3(video_url):
         audio_stream = audio_stream.download()
         
         # Set the output directory to /tmp and construct a new file path
-        mp3_output_dir = "/tmp"
+        mp3_output_dir = os.getcwd()
         try:
             if mp3_output_dir and not os.path.exists(mp3_output_dir):
                 os.makedirs(mp3_output_dir)
@@ -20,7 +20,8 @@ def convert_to_mp3(video_url):
             pass
         
         base_name = os.path.splitext(os.path.basename(audio_stream))[0]
-        mp3_path = os.path.join(mp3_output_dir, base_name + '.mp3')
+        print(f"Base name: {base_name}")
+        mp3_path = os.path.join(mp3_output_dir, 'temp.mp3')
         
         # Extract the audio using AudioFileClip
         with AudioFileClip(audio_stream) as clip:
@@ -30,7 +31,7 @@ def convert_to_mp3(video_url):
         os.remove(audio_stream)
                 
         # Return the MP3 path and its filename as dynamic name
-        return mp3_path, os.path.basename(mp3_path)
+        return mp3_path, base_name
     
     except Exception as e:
         print(f"Error: {e}")
