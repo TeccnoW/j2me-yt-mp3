@@ -21,8 +21,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 RUN git clone https://github.com/YunzheZJU/youtube-po-token-generator.git
 WORKDIR /youtube-po-token-generator
 RUN npm install
-RUN node youtube-po-token-generator/examples/one-shot.js
-RUN node youtube-po-token-generator/examples/one-shot.js > po_token.txt
+RUN node examples/one-shot.js
+RUN node examples/one-shot.js > po_token.txt
 
 # Set the working directory in the container
 WORKDIR /app
