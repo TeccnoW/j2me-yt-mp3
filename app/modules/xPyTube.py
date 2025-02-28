@@ -24,12 +24,12 @@ def convert_to_mp3(video_url):
         poToken = "CgtBUGtab2NxMXpycyiH7oa-BjIKCgJVUxIEGgAgRg%3D%3D"
     
         # Download the YouTube video
-        if SERVER == 0:
-            yt = YouTube(video_url)
+        if SERVER == "0":
+            yt = YouTube(video_url, use_po_token=True, proxies=proxy, po_token_verifier=(visitorData, poToken))
             mp3_output_dir = os.getcwd()
         else:
             print(f"Using proxy: {proxy}")
-            yt = YouTube(video_url, 'WEB', use_po_token=True, po_token_verifier=(visitorData, poToken))
+            yt = YouTube(video_url, 'WEB', use_po_token=True, proxies=proxy, po_token_verifier=(visitorData, poToken))
             mp3_output_dir = "/tmp"
         audio_stream = yt.streams.filter(only_audio=True).first()
         audio_stream = audio_stream.download()
