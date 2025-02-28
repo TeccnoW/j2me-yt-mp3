@@ -51,16 +51,15 @@ COPY app/ .
 ENV PYTHONPATH=/app
 
 # -----------------------------------------------------------
-# Add entrypoint script for connecting Warp VPN before launch
+# Start script for connecting Warp VPN before launch
 # -----------------------------------------------------------
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY start.sh ./start.sh
 
-EXPOSE 8001
+# Ensure the script has Unix line endings and is executable
+RUN sed -i 's/\r$//' ./start.sh && chmod +x ./start.sh
 
-# Use the entrypoint script as the container’s entrypoint
-ENTRYPOINT ["/entrypoint.sh"]
+# Expose necessary ports
+EXPOSE 8080
 
-# Note:
-# To allow the Warp VPN to modify network settings, you might need to run the container with:
-#   --cap-add=NET_ADMIN --device /dev/net/tun
+# Start both applications using the startup script
+CMD ["/app/start.sh"]
