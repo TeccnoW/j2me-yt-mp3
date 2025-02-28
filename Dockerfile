@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory in the container
-WORKDIR /app/app
+WORKDIR /app
 
 # --------------------
 # FastAPI Application Setup
@@ -22,9 +22,13 @@ WORKDIR /app/app
 COPY app/requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the application code into /app/app
-COPY app/ ./app/
+# Copy the application code into /app
+# Make sure the entire directory structure is preserved
+COPY app/ ./
+
+# Add the current directory to Python path to ensure modules can be imported
+ENV PYTHONPATH=/app
 
 EXPOSE 8001
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001"]
