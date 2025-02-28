@@ -5,6 +5,8 @@ pytube
 pytubefix
 moviepy
 
+free-proxy
+
 jinja2
 
 python-multipart

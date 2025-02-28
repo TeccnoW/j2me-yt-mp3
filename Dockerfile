@@ -19,15 +19,15 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Set noninteractive mode for apt to avoid prompts
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Add Cloudflare WARP
-RUN curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg \
-    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/cloudflare-client.list \
-    && apt-get update && apt-get install -y cloudflare-warp
-
-RUN warp-svc & sleep 3 && warp-cli register
+# # Set noninteractive mode for apt to avoid prompts
+# ENV DEBIAN_FRONTEND=noninteractive
+# 
+# # Add Cloudflare WARP
+# RUN curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg \
+#     && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/cloudflare-client.list \
+#     && apt-get update && apt-get install -y cloudflare-warp
+# 
+# RUN warp-svc & sleep 3 && warp-cli register
 
 # Clone the repository and run Node.js build commands
 RUN git clone https://github.com/YunzheZJU/youtube-po-token-generator.git

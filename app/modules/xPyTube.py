@@ -1,15 +1,31 @@
+from dotenv import load_dotenv
+load_dotenv("../.env")
+
 from pytubefix import YouTube
 from moviepy import AudioFileClip
 import os
 
+from fp.fp import FreeProxy
+
+# Get a free proxy
+SERVER = os.getenv("SERVER")
+
 def convert_to_mp3(video_url):
     try:
+        proxyhttp = FreeProxy(rand=True, timeout=1).get()
+        
+        print(f"HTTP Proxy: {proxyhttp}")
+        
+        proxy = {
+            "http": proxyhttp
+            }
+    
         # Download the YouTube video
-        if __name__ == '__main__':
+        if SERVER == 0:
             yt = YouTube(video_url)
             mp3_output_dir = os.getcwd()
         else:
-            yt = YouTube(video_url, 'WEB', use_po_token=True)
+            yt = YouTube(video_url, 'WEB', proxies=proxy)
             mp3_output_dir = "/tmp"
         audio_stream = yt.streams.filter(only_audio=True).first()
         audio_stream = audio_stream.download()
