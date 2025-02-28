@@ -38,14 +38,17 @@ async def read_root():
 
 @app.post("/download")
 async def download_file(url: str = Form(...)):
-    result = xPyTube.convert_to_mp3(url)
-    if result:
-        mp3_path, name = result
-        headers = {
-            "Content-Disposition": f"attachment; filename*=UTF-8''{urllib.parse.quote(name)}"
-        }
-        return FileResponse(mp3_path, media_type='audio/mpeg', headers=headers)
-    return {"error": "Error occurred"}
+    try:
+        result = xPyTube.convert_to_mp3(url)
+        if result:
+            mp3_path, name = result
+            headers = {
+                "Content-Disposition": f"attachment; filename*=UTF-8''{urllib.parse.quote(name)}"
+            }
+            return FileResponse(mp3_path, media_type='audio/mpeg', headers=headers)
+        return {"error": "Error occurred"}
+    except Exception as e:
+        return {"error": f"Error: {e}"}
 
 if __name__ == "__main__":
     import uvicorn
