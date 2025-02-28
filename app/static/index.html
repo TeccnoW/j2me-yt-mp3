@@ -51,46 +51,16 @@
             <button type="submit">Convert</button>
         </form>
     </div>
-    <script>
-        document.getElementById('yt-mp3-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const videoUrl = document.getElementById('video_url').value;
-            const formData = new FormData();
-            formData.append('url', videoUrl);
-    
-            try {
-                const response = await fetch('/download', {
-                    method: 'POST',
-                    body: formData
-                });
-    
-                if (!response.ok) {
-                    throw new Error('Conversion failed.');
-                }
-    
-                // Extract the filename from the Content-Disposition header or fallback to default
-                const contentDisposition = response.headers.get('content-disposition');
-                let fileName = 'output.mp3';
-                if (contentDisposition) {
-                    const fileNameMatch = contentDisposition.match(/filename\*?=(?:UTF-8'')?([^;]+)/);
-                    if (fileNameMatch && fileNameMatch[1]) {
-                        fileName = decodeURIComponent(fileNameMatch[1]);
-                    }
-                }
-    
-                const blob = await response.blob();
-                const downloadUrl = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = downloadUrl;
-                a.download = fileName;
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                window.URL.revokeObjectURL(downloadUrl);
-            } catch (error) {
-                alert(error.message);
-            }
-        });
+    <script type="text/javascript">
+        // Simple onsubmit handler for older phones without advanced JavaScript support.
+        document.getElementById('yt-mp3-form').onsubmit = function() {
+            var submitButton = this.getElementsByTagName('button')[0];
+            // Indicate the button was clicked by disabling it and changing its text
+            submitButton.disabled = true;
+            submitButton.innerHTML = 'Converting...';
+            // Let the form submit normally.
+            return true;
+        };
     </script>
 </body>
 </html>

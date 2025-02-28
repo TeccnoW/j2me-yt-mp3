@@ -43,7 +43,7 @@ def convert_to_mp3(video_url):
         os.remove(audio_stream)
                 
         # Return the MP3 path and its filename as dynamic name
-        return mp3_path, base_name
+        return mp3_path, base_name + ".mp3"
     
     except Exception as e:
         raise e
