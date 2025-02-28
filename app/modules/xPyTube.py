@@ -25,7 +25,8 @@ def convert_to_mp3(video_url):
             yt = YouTube(video_url)
             mp3_output_dir = os.getcwd()
         else:
-            yt = YouTube(video_url, 'WEB', proxies=proxy)
+            print(f"Using proxy: {proxy}")
+            yt = YouTube(video_url, 'WEB', use_po_token=True, proxies=proxy)
             mp3_output_dir = "/tmp"
         audio_stream = yt.streams.filter(only_audio=True).first()
         audio_stream = audio_stream.download()
