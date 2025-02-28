@@ -5,12 +5,12 @@ import os
 def convert_to_mp3(video_url):
     try:
         # Download the YouTube video
-        yt = YouTube(video_url, 'WEB')
+        yt = YouTube(video_url, use_po_token=True)
         audio_stream = yt.streams.filter(only_audio=True).first()
         audio_stream = audio_stream.download()
         
         # Set the output directory to /tmp and construct a new file path
-        mp3_output_dir = os.getcwd()
+        mp3_output_dir = "/tmp"
         try:
             if mp3_output_dir and not os.path.exists(mp3_output_dir):
                 os.makedirs(mp3_output_dir)
