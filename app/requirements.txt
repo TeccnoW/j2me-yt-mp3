@@ -4,3 +4,5 @@ uvicorn
 pytube
 pytubefix
 moviepy
+
+jinja2
