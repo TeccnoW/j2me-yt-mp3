@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     python3-dev \
     portaudio19-dev \
+    git \
     bash \
     nginx \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
