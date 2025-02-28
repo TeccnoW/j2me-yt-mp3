@@ -18,8 +18,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Cloudflare Warp VPN
-RUN apt-get update && apt-get install -y --no-install-recommends cloudflare-warp \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt install cloudflare-warp
 RUN warp-cli registration new
 
 # RUN Node.js build commands here
