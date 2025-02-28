@@ -59,7 +59,7 @@ def convert_to_mp3(video_url):
     
     except Exception as e:
         print(f"Error: {e}")
-        return False
+        raise e
 
 if __name__ == '__main__':
     video_url = input("Youtube video URL'si girin: ")
