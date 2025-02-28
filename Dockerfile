@@ -11,6 +11,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     nginx \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Install Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Set the working directory in the container
 WORKDIR /app
 
