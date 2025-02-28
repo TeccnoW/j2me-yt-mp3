@@ -5,7 +5,7 @@ import os
 def convert_to_mp3(video_url):
     try:
         # Download the YouTube video
-        yt = YouTube(video_url)
+        yt = YouTube(video_url, use_po_token=True)
         audio_stream = yt.streams.filter(only_audio=True).first()
         audio_stream = audio_stream.download()
         
