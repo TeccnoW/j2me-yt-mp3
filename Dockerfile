@@ -1,7 +1,7 @@
 # Use the official Python image as the base image
 FROM python:3.13-slim
 
-# Install system dependencies including nginx and gnupg (needed for repository key)
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     build-essential \
@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     bash \
     nginx \
     gnupg \
+    lsb-release \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Node.js
@@ -27,7 +28,7 @@ RUN curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | gpg --yes --dearmor
     && apt-get update \
     && apt-get install -y cloudflare-warp
 
-# RUN Node.js build commands here
+# Clone the repository and run Node.js build commands
 RUN git clone https://github.com/YunzheZJU/youtube-po-token-generator.git
 WORKDIR /youtube-po-token-generator
 RUN npm install
