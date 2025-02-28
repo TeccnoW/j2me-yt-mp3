@@ -11,6 +11,14 @@ def convert_to_mp3(video_url):
         
         # Set the output directory to /tmp and construct a new file path
         mp3_output_dir = "/tmp"
+        try:
+            if mp3_output_dir and not os.path.exists(mp3_output_dir):
+                os.makedirs(mp3_output_dir)
+        except Exception as e:
+            print(f"Error: {e}")
+            mp3_output_dir = os.getcwd()
+            pass
+        
         base_name = os.path.splitext(os.path.basename(audio_stream))[0]
         mp3_path = os.path.join(mp3_output_dir, base_name + '.mp3')
         

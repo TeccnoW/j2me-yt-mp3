@@ -19,12 +19,11 @@ WORKDIR /app
 # --------------------
 
 # Copy requirements and install dependencies
-COPY app/requirements.txt requirements.txt
+COPY app/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the application code into /app
-# Make sure the entire directory structure is preserved
-COPY app/ ./
+COPY app/ .
 
 # Add the current directory to Python path to ensure modules can be imported
 ENV PYTHONPATH=/app
