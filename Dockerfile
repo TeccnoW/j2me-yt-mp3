@@ -1,7 +1,7 @@
 # Use the official Python image as the base image
 FROM python:3.13-slim
 
-# Install system dependencies including nginx and gnupg (needed for adding repository keys)
+# Install system dependencies including nginx and gnupg (needed for repository key)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     build-essential \
@@ -21,13 +21,18 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 # Set noninteractive mode for apt to avoid prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Add Cloudflare WARP repository key and repository
-RUN curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | gpg --dearmor -o /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg && \
-    echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ stable main" > /etc/apt/sources.list.d/cloudflare-client.list
+# Add Cloudflare WARP repository key and repository.
+# The "trusted=yes" attribute bypasses the missing Release file issue.
+RUN curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | \
+    gpg --dearmor -o /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg trusted=yes] https://pkg.cloudflareclient.com/ stable main" \
+    > /etc/apt/sources.list.d/cloudflare-client.list
 
 # Update apt and install Cloudflare WARP
 RUN apt-get update && apt-get install -y --no-install-recommends cloudflare-warp && \
     rm -rf /var/lib/apt/lists/*
+    
+# Register the WARP client
 RUN warp-cli register new
 
 # RUN Node.js build commands here
@@ -43,7 +48,6 @@ WORKDIR /app
 # --------------------
 # FastAPI Application Setup
 # --------------------
-
 # Copy requirements and install dependencies
 COPY app/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
