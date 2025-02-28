@@ -21,19 +21,11 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 # Set noninteractive mode for apt to avoid prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Add Cloudflare WARP repository key and repository.
-# The "trusted=yes" attribute bypasses the missing Release file issue.
-RUN curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | \
-    gpg --dearmor -o /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg && \
-    echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg trusted=yes] https://pkg.cloudflareclient.com/ stable main" \
-    > /etc/apt/sources.list.d/cloudflare-client.list
-
-# Update apt and install Cloudflare WARP
-RUN apt-get update && apt-get install -y --no-install-recommends cloudflare-warp && \
-    rm -rf /var/lib/apt/lists/*
-    
-# Register the WARP client
-RUN warp-cli register new
+# Add Cloudflare WARP
+RUN echo "deb http://pkg.cloudflarewarp.com/ focal main" > /etc/apt/sources.list.d/cloudflarewarp.list \
+    && curl -L https://pkg.cloudflarewarp.com/cloudflare-warp.key | apt-key add - \
+    && apt-get update && apt-get install -y cloudflare-warp \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # RUN Node.js build commands here
 RUN git clone https://github.com/YunzheZJU/youtube-po-token-generator.git
