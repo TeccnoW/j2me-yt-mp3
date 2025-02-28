@@ -18,8 +18,13 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Cloudflare Warp VPN
-RUN apt install cloudflare-warp
-RUN warp-cli registration new
+# Set noninteractive mode for apt to avoid prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update apt and install Cloudflare Warp
+RUN apt-get update && apt-get install -y --no-install-recommends cloudflare-warp && \
+    rm -rf /var/lib/apt/lists/*
+RUN warp-cli register new
 
 # RUN Node.js build commands here
 RUN git clone https://github.com/YunzheZJU/youtube-po-token-generator.git
