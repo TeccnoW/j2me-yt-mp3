@@ -1,7 +1,7 @@
 # Use the official Python image as the base image
 FROM python:3.13-slim
 
-# Install system dependencies including nginx
+# Install system dependencies including nginx and gnupg (needed for adding repository keys)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     build-essential \
@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     bash \
     nginx \
+    gnupg \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Node.js
@@ -17,11 +18,14 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Cloudflare Warp VPN
 # Set noninteractive mode for apt to avoid prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Update apt and install Cloudflare Warp
+# Add Cloudflare WARP repository key and repository
+RUN curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | gpg --dearmor -o /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ stable main" > /etc/apt/sources.list.d/cloudflare-client.list
+
+# Update apt and install Cloudflare WARP
 RUN apt-get update && apt-get install -y --no-install-recommends cloudflare-warp && \
     rm -rf /var/lib/apt/lists/*
 RUN warp-cli register new
@@ -51,7 +55,7 @@ COPY app/ .
 ENV PYTHONPATH=/app
 
 # -----------------------------------------------------------
-# Start script for connecting Warp VPN before launch
+# Start script for connecting WARP VPN before launch
 # -----------------------------------------------------------
 COPY start.sh ./start.sh
 
