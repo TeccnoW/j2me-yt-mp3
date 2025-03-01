@@ -53,7 +53,7 @@ def convert_to_mp3(video_url):
                 print("HTTP Error 429: Too Many Requests, trying a new proxy...")
                 continue
             else:
-                raise e
+                raise "Fail on Pytube:" + str(e)
 
     raise Exception("Failed to convert video after multiple attempts due to rate limiting.")
 
