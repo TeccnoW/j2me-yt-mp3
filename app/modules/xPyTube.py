@@ -14,13 +14,14 @@ def convert_to_mp3(video_url):
     for attempt in range(max_retries):
         try:
             print(f"Attempt {attempt+1}: Step 1 - Getting free proxy...")
+            proxy = FreeProxy(google=True, timeout=1).get()
             
             print("Step 2 - Downloading YouTube video...")
             if SERVER == "0":
-                yt = YouTube(video_url, 'WEB')
+                yt = YouTube(video_url, 'WEB', proxies={"http": proxy})
                 mp3_output_dir = os.getcwd()
             else:
-                yt = YouTube(video_url, 'WEB')
+                yt = YouTube(video_url, 'WEB', proxies={"http": proxy})
                 mp3_output_dir = "/tmp"
                 
             audio_stream = yt.streams.filter(only_audio=True).first()
