@@ -2,6 +2,13 @@ import os
 import subprocess
 import sys
 
+
+screen = (320, 240)
+scale = 90
+
+res_settings = (screen[0] * scale / 100, screen[1] * scale / 100)
+RESOLUTION = f"{res_settings[0]}:{res_settings[1]}"
+
 def get_ffmpeg_path():
     try:
         # Use the Windows "where" command to locate ffmpeg.exe
@@ -28,7 +35,7 @@ def convert_file(input_path, output_path):
         ffmpeg_path,
         '-hwaccel', 'cuda',
         '-i', input_path,
-        '-vf', 'scale=288:216',
+        '-vf', 'scale=' + RESOLUTION,
         '-c:v', 'h264_nvenc',
         '-profile:v', 'baseline',
         '-level', '2.1',
