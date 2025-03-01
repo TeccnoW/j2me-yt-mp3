@@ -23,7 +23,7 @@ def convert_to_mp3(video_url):
                 mp3_output_dir = "/tmp"
                 
             print("Step 2 - Downloading video using Pytube...")
-            yt = YouTube(video_url, 'WEB', proxies=proxy)
+            yt = YouTube(video_url, 'WEB', proxies=proxy, use_po_token=True)
             
             audio_stream = yt.streams.filter(only_audio=True).first()
             audio_file_path = audio_stream.download()
