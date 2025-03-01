@@ -13,8 +13,7 @@ def convert_to_mp3(video_url):
         try:
             print(f"Attempt {attempt+1}: Step 1 - Getting free proxy...")
             proxy = {
-            "http": "socks5://185.95.0.197:23761",
-            "https": "socks5://185.95.0.197:23761"
+            "http": "149.86.159.4:8080",
             }
             
             print("Step 2 - Downloading YouTube video...")
