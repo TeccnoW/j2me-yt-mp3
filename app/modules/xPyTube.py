@@ -16,14 +16,15 @@ def convert_to_mp3(video_url):
             "http": "149.86.159.4:8080",
             }
             
-            print("Step 2 - Downloading YouTube video...")
+            print("Step 2 - Setting output directory...")
             if SERVER == "0":
-                yt = YouTube(video_url, 'WEB', proxies=proxy)
                 mp3_output_dir = os.getcwd()
             else:
-                yt = YouTube(video_url, 'WEB', proxies=proxy)
                 mp3_output_dir = "/tmp"
                 
+            print("Step 2 - Downloading video using Pytube...")
+            yt = YouTube(video_url, 'WEB', proxies=proxy)
+            
             audio_stream = yt.streams.filter(only_audio=True).first()
             audio_file_path = audio_stream.download()
             
