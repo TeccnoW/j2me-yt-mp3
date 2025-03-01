@@ -10,3 +10,5 @@ free-proxy
 jinja2
 
 python-multipart
+
+httpx
