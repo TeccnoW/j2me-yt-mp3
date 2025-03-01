@@ -52,7 +52,7 @@ def convert_to_mp3(video_url):
         
         except Exception as e:
             if "HTTP Error 429" in str(e):
-                print("HTTP Error 429: Too Many Requests. Trying a new proxy...")
+                print("HTTP Error 429: " + str(e))
                 continue
             else:
                 print(f"An error occurred: {e}")
